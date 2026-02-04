@@ -1,4 +1,4 @@
-# 🛡️ AI-Malicious-Behavior-Detection
+# 🛡️ Binary-Malicious-Behavior-Detection
 
 > Cybersecurity and Artificial Intelligence Challenge organized by [Université Paris I Panthéon-Sorbonne](https://www.pantheonsorbonne.fr) and the ComCyber unit of the French Ministry of the Interior, as part of the [Sorbonne Data Challenge](https://sorbonne-data-challenge.fr/).
 
