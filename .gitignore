@@ -1,0 +1,21 @@
+# Challenge data (not redistributed) and generated matrices
+data/*
+!data/README.md
+
+# Trained models and predictions
+*.h5
+*.keras
+predictions.csv
+test/
+
+# Python / Jupyter
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

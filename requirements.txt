@@ -1,0 +1,10 @@
+numpy
+scipy
+pandas
+networkx
+scikit-learn
+tensorflow
+matplotlib
+tqdm
+spacy
+notebook
