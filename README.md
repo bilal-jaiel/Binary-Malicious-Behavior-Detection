@@ -67,10 +67,10 @@ graph LR
 | Dimension reduction | `TruncatedSVD` keeps the number of components explaining 90 % of the variance |
 | Label filtering | Behaviours present in fewer than 5 % or more than 95 % of the binaries are set aside |
 | Feature selection | A Random Forest ranks the SVD components; those above the mean importance are kept |
-| Model | Keras MLP (256, 128, 64 units, batch normalisation, 40 % dropout, sigmoid outputs), Adam with learning rate 5·10⁻⁴, early stopping, focal loss (γ = 2, α = 0.25) to down-weight the many easy negatives |
+| Model | Keras MLP (256, 128, 64 units, batch normalisation, 40 % dropout, sigmoid outputs), Adam with learning rate 5·10⁻⁴, early stopping, a focal-style loss (γ = 2, α = 0.25) meant to handle the label imbalance |
 | Evaluation | Macro F1 on a 20 % hold-out set |
 
-The notebook also applies the feature extraction to the challenge's test graphs and runs inference with the saved model.
+The last cells load the saved model and run inference on a test feature matrix; as written, they still read the training graph folder (see the limitations).
 
 ## Getting started
 
@@ -101,6 +101,8 @@ No final score is recorded in this repository: the notebook was committed withou
 ## Known limitations
 
 - Feature and label alignment. Graphs are vectorised in the order in which files are read and processed in parallel, while labels follow the order of the CSV; the two are aligned by position, with truncation. Rows must be paired by file name (SHA-256) before any score can be trusted.
+- Incomplete focal loss. The implemented loss keeps only the positive term `-α (1 - p)^γ y log p`; negatives contribute no loss, so nothing penalises predicting a behaviour that is absent. The `(1 - y)` term must be added before training again.
+- Test pipeline not wired. The inference cells re-extract features from `../data/digraphs` (the training folder) and then load `test/tfidf_matrix.npz`, which no cell writes. The test graphs and output paths must be set before the inference can run.
 - Test-time transformations. The test cells hash instructions into 2¹⁹ features (2²⁰ for training) and fit a new TF-IDF and SVD on the test graphs instead of reusing the training ones, so test features do not live in the training space. The fitted transformers should be saved and reused.
 - Graph structure is only partly used. A DFS order keeps some control flow, but loops and branching are lost; graph statistics or a graph neural network would exploit them directly.
 - Instruction normalisation. Addresses and immediate values are kept in the tokens; normalising them (for example `mov reg, imm`) would shrink the vocabulary and help generalisation.
